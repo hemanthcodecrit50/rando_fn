@@ -8,10 +8,11 @@ const executeCode = async (req, res) => {
             return res.status(400).json({ message: "Language and code are required." });
         }
 
-        // Using JDoodle API (Replace with your API credentials)
+        // JDoodle API credentials from environment variables
         const JDoodleClientID = process.env.JDOODLE_CLIENT_ID;
         const JDoodleClientSecret = process.env.JDOODLE_CLIENT_SECRET;
         
+        // Send code execution request to JDoodle
         const response = await axios.post("https://api.jdoodle.com/v1/execute", {
             clientId: JDoodleClientID,
             clientSecret: JDoodleClientSecret,

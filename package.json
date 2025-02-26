@@ -21,11 +21,13 @@
     "firebase-admin": "^13.1.0",
     "firebase-functions": "^6.3.2",
     "helmet": "^8.0.0",
+    "jdoodle": "^0.0.0-dev",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "openai": "^4.85.4"
   },
   "description": ""
 }
