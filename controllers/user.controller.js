@@ -28,31 +28,49 @@ const registerUser = async (req, res) => {
 };
 
 // Login user
-const loginUser = async (req, res) => {
+    const loginUser = async (req, res) => {
+        try {
+            const { email, password } = req.body;
+
+            // Find user by email
+            const user = await User.findOne({ email });
+            if (!user) {
+                return res.status(400).json({ message: "Invalid email or password." });
+            }
+
+            // Compare password
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
+                return res.status(400).json({ message: "Invalid email or password." });
+            }
+
+            // Generate JWT Token
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+
+            res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
+            res.status(200).json({ message: "Login successful!", token });
+        } catch (error) {
+            res.status(500).json({ message: "Error logging in", error: error.message });
+        }
+    };
+
+//log out user
+const logoutUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        res.cookie("jwt", "", { 
+            httpOnly: true, 
+            expires: new Date(0), // Expire immediately
+            secure: process.env.NODE_ENV === "production"
+        });
 
-        // Find user by email
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: "Invalid email or password." });
-        }
-
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "Invalid email or password." });
-        }
-
-        // Generate JWT Token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-
-        res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
-        res.status(200).json({ message: "Login successful!", token });
+        res.status(200).json({ message: "Logout successful!" });
     } catch (error) {
-        res.status(500).json({ message: "Error logging in", error: error.message });
+        res.status(500).json({ message: "Error logging out", error: error.message });
     }
 };
+
+module.exports = { logoutUser };
+
 
 // Get user details
 const getUser = async (req, res) => {
