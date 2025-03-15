@@ -57,7 +57,7 @@ const registerUser = async (req, res) => {
 //log out user
 const logoutUser = async (req, res) => {
     try {
-        res.cookie("jwt", "", { 
+        res.cookie("token", "", { 
             httpOnly: true, 
             expires: new Date(0), // Expire immediately
             secure: process.env.NODE_ENV === "production"
@@ -68,8 +68,6 @@ const logoutUser = async (req, res) => {
         res.status(500).json({ message: "Error logging out", error: error.message });
     }
 };
-
-module.exports = { logoutUser };
 
 
 // Get user details
@@ -106,4 +104,4 @@ const getUserSubmissions = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, getUser, updateUser, getUserSubmissions };
+module.exports = { registerUser, loginUser,logoutUser, getUser, updateUser, getUserSubmissions };

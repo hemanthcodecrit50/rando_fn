@@ -55,6 +55,7 @@ const getAIReview = async (code, language) => {
             5. Suggestions for code improvement.
             6. Time complexity (Big O notation).
             7. Security issues (if any).
+            8. IF THE PROMPT IS NOT RELATED TO CODING (BE INTELLIGENT ENOUGH TO CLASSIFY IT), SEND THE RESPONSE "YOU ARE ONLY ALLOWED TO ASK CODING RELATED QUESTIONS."
 
             Code:
             ${code}
